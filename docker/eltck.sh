@@ -20,6 +20,10 @@ echo "ANT_HOME in eltck.sh $ANT_HOME"
 echo "PATH in eltck.sh $PATH"
 echo "ANT_OPTS in eltck.sh $ANT_OPTS"
 
+if [ -f "/etc/os-release" ]; then
+  cat "/etc/os-release";
+fi
+
 cd $TCK_HOME
 
 if ls ${WORKSPACE}/standalone-bundles/*eltck*.zip 1> /dev/null 2>&1; then
@@ -40,7 +44,7 @@ if [ -z "$GF_TOPLEVEL_DIR" ]; then
 fi
 
 ##### installRI.sh starts here #####
-echo "Download and install GlassFish 5.0.1 ..."
+echo "Download and install GlassFish 6.0.0 ..."
 if [ -z "${GF_BUNDLE_URL}" ]; then
   echo "[ERROR] GF_BUNDLE_URL not set"
   exit 1
@@ -55,7 +59,16 @@ chmod -R 777 $TS_HOME
 
 cd $TS_HOME/bin
 
-sed -i "s#^el\.classes=.*#el.classes=$TS_HOME/lib/javatest.jar:$TCK_HOME/$GF_TOPLEVEL_DIR/glassfish/modules/jakarta.el.jar#g" ts.jte
+if [[ "$JDK" == "JDK11" || "$JDK" == "jdk11" ]];then
+  export JAVA_HOME=${JDK11_HOME}
+  export PATH=$JAVA_HOME/bin:$PATH
+  cp ts.jte.jdk11 ts.jte
+fi
+
+which java
+java -version
+
+sed -i "s#^el\.classes=.*#el.classes=$TS_HOME/lib/javatest.jar:$TCK_HOME/$GF_TOPLEVEL_DIR/glassfish/modules/jakarta.el.jar:$TCK_HOME/$GF_TOPLEVEL_DIR/glassfish/modules/jakarta.el-api.jar#g" ts.jte
 sed -i "s#^report.dir=.*#report.dir=$TCK_HOME/${TCK_NAME}report/${TCK_NAME}#g" ts.jte
 sed -i "s#^work.dir=.*#work.dir=$TCK_HOME/${TCK_NAME}work/${TCK_NAME}#g" ts.jte
 if [ ! -z "$TCK_BUNDLE_BASE_URL" ]; then

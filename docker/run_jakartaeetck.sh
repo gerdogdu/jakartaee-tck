@@ -113,7 +113,7 @@ cp ts.save $TS_HOME/bin/ts.jte
 
 printf  "
 ******************************************************
-* Installing CI/RI (Glassfish 5.1)                   *
+* Installing CI/RI (Glassfish 6.0)                   *
 ******************************************************
 
 "
@@ -398,6 +398,11 @@ if [[ $test_suite == "javamail" || $test_suite == "samples" || $test_suite == "s
   ant -DdestinationURL="imap://${ESCAPED_MAIL_USER}:${MAIL_PASSWORD}@${MAIL_HOST}:${IMAP_PORT}" populateMailbox
 fi
 ### populateMailbox for javamail suite - End ###
+
+if [[ $test_suite == javamail* || $test_suite == samples* || $test_suite == servlet* || $test_suite == appclient* || $test_suite == ejb* || $test_suite == jsp* ]]; then
+  ${CTS_HOME}/ri/${GF_RI_TOPLEVEL_DIR}/glassfish/bin/asadmin --user admin --passwordfile ${ADMIN_PASSWORD_FILE} create-jvm-options -Ddeployment.resource.validation=false
+fi
+
 
 ##### configRI.sh ends here #####
 cd  ${TS_HOME}/bin

@@ -140,9 +140,6 @@ The `provider-configuration.xsd` file is a schema file that resides in
 the same directory as the `ProviderConfiguration.xml` file and describes
 the `ProviderConfiguration.xml` file. This file should not be edited.
 
-thref4]]
-
-
 [[baseline-compatibility-requirements]]
 1.2.9 Baseline Compatibility Requirements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -198,7 +195,7 @@ handled in the following ways:
 * A Jakarta Deployment version 1.2 deployment is used for Jakarta EE based
 implementations. This is differentiated by using a different deliverable
 class,
-`deliverable.class=com.sun.ts.lib.deliverable.jaspic.JaspicJavaEEDeliverable`,
+`deliverable.class=com.sun.ts.lib.deliverable.jaspic.JaspicJakartaEEDeliverable`,
 which is configurable in the `ts.jte` file. Vendors need to write their
 own `Deliverable` class that can be used to deploy in their environment.
 * For standalone implementations (this includes container and
@@ -223,7 +220,7 @@ and leaves the deployment up to the licensee by way of an Ant target.
 `ts.jte` file, `platform.mode`, is used to distinguish the different
 SOAP implementations.
 
-** `platform.mode=javaEE` (for Jakarta EE based implementations)
+** `platform.mode=jakartaEE` (for Jakarta EE based implementations)
 
 ** `platform.mode=standalone` +
 
@@ -240,8 +237,8 @@ expected to deploy the service and make it available for client
 invocations. For this purpose, a no-op for `deploy` and `undeploy`
 targets can be implemented in the `deploy.xml` file.
 
-The {TechnologyShortName} TCK uses Jakarta Web Services Metadata, 2.1 metadata based annotations to
-define web service applications. Although  Jakarta Web Services Metadata, 2.1 support is not
+The {TechnologyShortName} TCK uses Jakarta Web Services Metadata, 3.0 metadata based annotations to
+define web service applications. Although  Jakarta Web Services Metadata, 3.0 support is not
 required in a vendor's SOAP implementation, using web services metadata
 simplifies the definition of web services and the linking between
 various artifacts of web services (the WSDL, `ServiceEndpoint`, and
@@ -253,7 +250,7 @@ implementation, standalone implementation, and so on.
 
 Since vendors are already expected to generate web service artifacts
 using `wsgen` and `wsimport` tools, writing an annotation processor to
-support Jakarta Web Services Metadata, 2.1 based annotations is just a step further towards making
+support Jakarta Web Services Metadata, 3.0 based annotations is just a step further towards making
 a better SOAP implementation. Also having annotated web services helps
 vendors generate different artifacts that suit their SOAP
 implementation.
@@ -262,7 +259,7 @@ implementation.
 [NOTE]
 ===================================================================
 
-For Jakarta EE based SOAP implementations, Jakarta Web Services Metadata, 2.1
+For Jakarta EE based SOAP implementations, Jakarta Web Services Metadata, 3.0
 support is required.
 
 ===================================================================

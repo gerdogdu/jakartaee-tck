@@ -21,6 +21,10 @@ echo "ANT_HOME in jtatck.sh $ANT_HOME"
 echo "PATH in jtatck.sh $PATH"
 echo "ANT_OPTS in jtatck.sh $ANT_OPTS"
 
+if [ -f "/etc/os-release" ]; then
+  cat "/etc/os-release";
+fi
+
 cd ${TCK_HOME}
 if ls ${WORKSPACE}/standalone-bundles/*jtatck*.zip 1> /dev/null 2>&1; then
   echo "Using stashed bundle for jtatck created during the build phase"
@@ -42,7 +46,7 @@ fi
 
 
 ##### installRI.sh starts here #####
-echo "Download and install GlassFish 5.0.1 ..."
+echo "Download and install GlassFish 6.0.0 ..."
 if [ -z "${GF_BUNDLE_URL}" ]; then
   echo "[ERROR] GF_BUNDLE_URL not set"
   exit 1
@@ -54,6 +58,15 @@ TS_HOME=$TCK_HOME/$TCK_NAME
 echo "TS_HOME $TS_HOME"
 
 cd ${TS_HOME}/bin
+
+if [[ "$JDK" == "JDK11" || "$JDK" == "jdk11" ]];then
+  export JAVA_HOME=${JDK11_HOME}
+  export PATH=$JAVA_HOME/bin:$PATH
+  cp ts.jte.jdk11 ts.jte
+fi
+
+which java
+java -version
 
 sed -i "s#^webServerHome=.*#webServerHome=${TCK_HOME}/$GF_TOPLEVEL_DIR/glassfish#g" ts.jte
 sed -i "s#^report.dir=.*#report.dir=${TCK_HOME}/${TCK_NAME}report/${TCK_NAME}#g" ts.jte

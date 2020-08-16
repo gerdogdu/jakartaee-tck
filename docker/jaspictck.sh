@@ -44,7 +44,7 @@ fi
 
 
 ##### installRI.sh starts here #####
-echo "Download and install GlassFish 5.0.1 ..."
+echo "Download and install GlassFish 6.0.0 ..."
 if [ -z "${GF_BUNDLE_URL}" ]; then
   echo "[ERROR] GF_BUNDLE_URL not set"
   exit 1
@@ -58,9 +58,20 @@ echo "TS_HOME $TS_HOME"
 chmod -R 777 $TS_HOME
 
 cd $TS_HOME/bin
+
+if [[ "$JDK" == "JDK11" || "$JDK" == "jdk11" ]];then
+  export JAVA_HOME=${JDK11_HOME}
+  export PATH=$JAVA_HOME/bin:$PATH
+  cp ts.jte.jdk11 ts.jte
+fi
+
+which java
+java -version
+
+
 sed -i 's#orb\.port=.*#orb.port=3700#g' ts.jte
 sed -i "s#jaspic\.home=.*#jaspic.home=$TCK_HOME/$GF_TOPLEVEL_DIR/glassfish#g" ts.jte
-sed -i 's#platform\.mode=.*#platform.mode=javaEE#g' ts.jte
+sed -i 's#platform\.mode=.*#platform.mode=jakartaEE#g' ts.jte
 sed -i 's#^deliverable\.class=.*#deliverable.class=com.sun.ts.lib.deliverable.cts.CTSDeliverable#g' ts.jte
 sed -i 's#wsgen\.ant\.classname=.*#wsgen.ant.classname=com.sun.tools.ws.ant.WsGen#g' ts.jte
 sed -i 's#wsimport\.ant\.classname=.*#wsimport.ant.classname=com.sun.tools.ws.ant.WsImport#g' ts.jte
